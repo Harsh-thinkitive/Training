@@ -12,6 +12,8 @@ import {
 } from "react-icons/fa";
 import {
   Autocomplete,
+  Button,
+  ButtonGroup,
   FormControl,
   IconButton,
   InputAdornment,
@@ -22,7 +24,6 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-
 
 function App() {
   const [searchValue, setSearchValue] = useState("");
@@ -76,11 +77,11 @@ function App() {
     "September",
     "October",
     "November",
-    "December"
+    "December",
   ];
 
   const [timeIntervals, setTimeIntervals] = useState(timeIntervalsDefault);
-  const [settingsExpand, setSettingsExpand] = useState(false)
+  const [settingsExpand, setSettingsExpand] = useState(false);
 
   const searchTimeInterval = (e: any) => {
     setSearchValue(e.target.value);
@@ -121,7 +122,7 @@ function App() {
           )}
         </div>
         {isMainModalOpen && (
-          <div style={{width : "50%"  , padding : "5px"}}>
+          <div style={{ width: "50%", padding: "5px" }}>
             <div>
               <div
                 style={{
@@ -241,11 +242,13 @@ function App() {
                 }}
               >
                 <div style={{ padding: "10px" }}>Browser Time</div>
-                <div style={{ padding: "10px"  , margin : '5px'}}>
-                  <button onClick={() => setSettingsExpand(!settingsExpand)}>Change Time Settings</button>
+                <div style={{ padding: "10px", margin: "5px" }}>
+                  <button onClick={() => setSettingsExpand(!settingsExpand)}>
+                    Change Time Settings
+                  </button>
                 </div>
               </div>
-              {settingsExpand ? <div
+              {/* {settingsExpand ? <div
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -275,51 +278,98 @@ function App() {
                 >
                   Fiscal Year
                 </div>
-              </div> : ""}
-              {browserTime== "TimeZone" && settingsExpand ? <div style={{ marginTop: "10px" }}>
-                <Stack spacing={2} sx={{ width: 650 }}>
-                  <Autocomplete
-                    id="free-solo-demo"
-                    freeSolo
-                    options={timeZones.map((option) => option.city)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        placeholder="type or select time zones"
-                        InputProps={{
-                          ...params.InputProps,
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <FaSearch />
-                            </InputAdornment>
-                          ),
-                        }}
-                        size="small"
-                      />
-                    )}
-                  />
-                </Stack>
-              </div> : ""}
-              {browserTime == "FiscalYear" && settingsExpand ?  <div> <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-name-label">Month</InputLabel>
-        <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value)}
-          input={<OutlinedInput label="Name" />}
-        >
-          {months.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-            >
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div> : ""}
+              </div> : ""} */}
+
+              <ButtonGroup
+                variant="text"
+                aria-label="text button group"
+                sx={{
+                  border: "1px solid grey",
+                  padding: "1px",
+                  borderRadius: "0px",
+                }}
+              >
+                <Button
+                  sx={{
+                    color: browserTime == "TimeZone" ? "black" : "grey",
+                    background:
+                      browserTime == "TimeZone" ? "lightgrey" : "white",
+                    border: "none",
+                  }}
+                  onClick={() => {
+                    setBrowserTime("TimeZone");
+                  }}
+                >
+                  Time Zone
+                </Button>
+                <Button
+                  sx={{
+                    color: browserTime == "FiscalYear" ? "black" : "grey",
+                    background:
+                      browserTime == "FiscalYear" ? "lightgrey" : "white",
+                  }}
+                  onClick={() => {
+                    setBrowserTime("FiscalYear");
+                  }}
+                >
+                  Fiscal Year
+                </Button>
+              </ButtonGroup>
+              {browserTime == "TimeZone" && settingsExpand ? (
+                <div style={{ marginTop: "10px" }}>
+                  <Stack spacing={2} sx={{ width: 650 }}>
+                    <Autocomplete
+                      id="free-solo-demo"
+                      freeSolo
+                      options={timeZones.map((option) => option.city)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="type or select time zones"
+                          InputProps={{
+                            ...params.InputProps,
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <FaSearch />
+                              </InputAdornment>
+                            ),
+                          }}
+                          size="small"
+                        />
+                      )}
+                    />
+                  </Stack>
+                </div>
+              ) : (
+                ""
+              )}
+              {browserTime == "FiscalYear" && settingsExpand ? (
+                <div>
+                  {" "}
+                  <FormControl sx={{ m: 1, width: 300 }}>
+                    <InputLabel id="demo-multiple-name-label">Month</InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      value={selectedMonth}
+                      onChange={(e) => setSelectedMonth(e.target.value)}
+                      input={<OutlinedInput label="Name" />}
+                      size="small"
+                      style={{
+                        width : "50%"
+                      }}
+                    >
+                      {months.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         )}
